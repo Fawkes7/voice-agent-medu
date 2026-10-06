@@ -81,7 +81,7 @@ export default function Home({ user }: Props) {
             </>
           ) : (
             <>
-              目前包含 <strong>单智能体 (SA)</strong> / <strong>多智能体 (MA)</strong> /
+              目前包含 <strong>单智能体 (SA)</strong> / <strong>语音多智能体 (MA)</strong> /
               <strong> 对照学习 (CT)</strong> / <strong>考试 (Exam)</strong> 四种学习方法与后测问卷。
             </>
           )}

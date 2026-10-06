@@ -17,7 +17,7 @@ const difficultyColors: Record<number, string> = {
 };
 
 const METHOD_LABELS: Record<MethodId, string> = {
-  multi_agent: "多智能体学习 (MA)",
+  multi_agent: "语音多智能体学习 (MA)",
   single_agent: "单智能体学习 (SA)",
   control: "对照学习 (CT)",
   exam: "考试方法 (Exam)",

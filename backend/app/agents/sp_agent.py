@@ -1,6 +1,6 @@
 import re
 
-from app.agents.base import call_qwen
+from app.agents.base import call_llm
 from app.prompts import PromptRegistry
 
 
@@ -109,7 +109,7 @@ async def generate_sp_response(
         voluntary = case_data["information_layers"]["voluntary"]
         return "，".join(voluntary), current_emotion
 
-    response = await call_qwen(
+    response = await call_llm(
         system_prompt=system_prompt,
         messages=messages,
         temperature=0.8,

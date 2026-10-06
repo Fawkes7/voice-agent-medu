@@ -37,6 +37,7 @@ from app.api import (
     surveys,
     prompts,
     final_evaluations,
+    voice,
 )
 from app.models.user import User
 from app.models.session import TrainingSession
@@ -146,8 +147,14 @@ async def _create_db_schema() -> None:
 async def lifespan(app: FastAPI):
     logger.info("=== SPAgent backend lifespan start ===")
     logger.info("DATABASE_URL : %s", _safe_db_url(settings.DATABASE_URL))
-    logger.info("QWEN_MODEL   : %s", settings.QWEN_MODEL)
-    logger.info("DASHSCOPE_KEY: %s", "SET" if settings.DASHSCOPE_API_KEY else "EMPTY — LLM calls will fail")
+    logger.info("LLM          : %s / %s", settings.LLM_PROVIDER, settings.llm_model)
+    logger.info("LLM_API_KEY  : %s", "SET" if settings.llm_api_key else "EMPTY — LLM calls will fail")
+    logger.info(
+        "ELEVENLABS_KEY: %s (STT=%s TTS=%s)",
+        "SET" if settings.ELEVENLABS_API_KEY else "EMPTY — voice MA disabled",
+        settings.ELEVENLABS_STT_MODEL,
+        settings.ELEVENLABS_TTS_MODEL,
+    )
     logger.info("JWT_SECRET   : %s", "SET" if settings.JWT_SECRET not in ("change-me-in-production", "your-jwt-secret-change-me") else "DEFAULT (change in production)")
 
     # 提前装载 YAML（即使 DB seed 还没跑完，agent 也能用 YAML 默认值响应）
@@ -184,6 +191,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(voice.router)
 app.include_router(cases.router)
 app.include_router(methods.router)
 app.include_router(surveys.router)

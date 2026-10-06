@@ -311,4 +311,35 @@ export const api = {
     exportSurveysCsvUrl: () => `${API_BASE}/analytics/export/surveys.csv`,
     exportCtStepsJsonlUrl: () => `${API_BASE}/analytics/export/ct_steps.jsonl`,
   },
+
+  voice: {
+    config: () =>
+      request<{
+        enabled: boolean;
+        stt_model: string;
+        tts_model: string;
+        language_code: string;
+      }>("/voice/config"),
+    scribeToken: () =>
+      request<{ token: string; model_id: string; expires_in_seconds: number }>(
+        "/voice/scribe-token",
+        { method: "POST" }
+      ),
+    tts: async (text: string, speaker: "patient" | "tutor" = "patient") => {
+      const token = getToken();
+      const res = await fetch(`${API_BASE}/voice/tts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ text, speaker }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: "TTS 失败" }));
+        throw new Error(err.detail || `HTTP ${res.status}`);
+      }
+      return res.blob();
+    },
+  },
 };

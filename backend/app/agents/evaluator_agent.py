@@ -1,4 +1,4 @@
-from app.agents.base import call_qwen, parse_json_response
+from app.agents.base import call_llm, parse_json_response
 from app.evaluation.checklist import load_rubrics
 from app.prompts import PromptRegistry
 
@@ -58,7 +58,7 @@ async def evaluate_exchange(
     messages = [{"role": "user", "content": user_msg}]
 
     try:
-        response = await call_qwen(
+        response = await call_llm(
             system_prompt=system_prompt,
             messages=messages,
             temperature=0.1,

@@ -1,4 +1,4 @@
-from app.agents.base import call_qwen, parse_json_response
+from app.agents.base import call_llm, parse_json_response
 from app.agents.final_evaluator import _render_worksheet
 from app.prompts import PromptRegistry
 
@@ -66,7 +66,7 @@ async def evaluate_need_for_intervention(
     system_prompt = PromptRegistry.get("tutor_agent")
 
     try:
-        response = await call_qwen(
+        response = await call_llm(
             system_prompt=system_prompt,
             messages=messages,
             temperature=0.5,

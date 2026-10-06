@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 export interface ChatMessage {
   role: "student" | "patient" | "tutor" | "system";
@@ -14,6 +14,7 @@ interface Props {
   disabled: boolean;
   patientName: string;
   isTyping: boolean;
+  footer?: ReactNode;
 }
 
 function TypingBubble({ patientName }: { patientName: string }) {
@@ -33,7 +34,14 @@ function TypingBubble({ patientName }: { patientName: string }) {
   );
 }
 
-export default function ChatPanel({ messages, onSend, disabled, patientName, isTyping }: Props) {
+export default function ChatPanel({
+  messages,
+  onSend,
+  disabled,
+  patientName,
+  isTyping,
+  footer,
+}: Props) {
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -89,6 +97,8 @@ export default function ChatPanel({ messages, onSend, disabled, patientName, isT
         <div ref={bottomRef} />
       </div>
 
+      {footer}
+
       <form
         onSubmit={handleSubmit}
         className="border-t border-slate-200 p-4 bg-white"
@@ -98,7 +108,7 @@ export default function ChatPanel({ messages, onSend, disabled, patientName, isT
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={disabled ? "会话已结束" : "输入你的问诊内容..."}
+            placeholder={disabled ? "会话已结束" : "语音发送后也可在此补充文字..."}
             disabled={disabled || isTyping}
             className="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-medical/30 focus:border-medical transition-all disabled:bg-slate-100"
             autoFocus

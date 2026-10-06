@@ -11,7 +11,7 @@ import yaml
 
 from app.agents.base import (
     FINAL_EVALUATION_LLM_TIMEOUT_SECONDS,
-    call_qwen,
+    call_llm,
     parse_json_response,
 )
 from app.evaluation.checklist import load_rubrics
@@ -219,7 +219,7 @@ async def evaluate_exam(
     user_msg = "请按系统提示词中的输出格式严格输出 JSON，不要任何额外文字。"
 
     try:
-        raw = await call_qwen(
+        raw = await call_llm(
             system_prompt=system_prompt,
             messages=[{"role": "user", "content": user_msg}],
             temperature=0.2,

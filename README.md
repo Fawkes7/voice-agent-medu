@@ -82,7 +82,7 @@ The methodology document is located at:
 └──────────────────────────────┬─────────────────────────────────────┘
                                ▼
                     ┌─────────────────────┐
-                    │ PostgreSQL  +  Qwen │
+                    │ PostgreSQL  +  LLM  │
                     └─────────────────────┘
 ```
 
@@ -236,7 +236,7 @@ cd backend
 python -m venv venv
 venv\Scripts\activate    # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
-copy .env.example .env   # Edit DASHSCOPE_API_KEY and DATABASE_URL
+copy .env.example .env   # Edit LLM_PROVIDER + its API key, and DATABASE_URL
 uvicorn app.main:app --reload
 ```
 
@@ -270,7 +270,8 @@ createdb spagent
 3. Connect the frontend service to `frontend/`.
 4. Configure environment variables:
    - `DATABASE_URL`
-   - `DASHSCOPE_API_KEY`
+   - `LLM_PROVIDER` (`openai` / `gemini` / `qwen`) and the matching key: `OPENAI_API_KEY`, `GEMINI_API_KEY` or `DASHSCOPE_API_KEY`
+   - `LLM_MODEL` (optional)
    - `JWT_SECRET`
 5. Configure the frontend nginx service to reverse proxy `/api` and `/ws` to the backend internal domain.
 
@@ -280,5 +281,5 @@ createdb spagent
 
 - **Backend**: Python 3.11, FastAPI, SQLAlchemy 2.0, asyncpg, WebSockets, JWT, PyYAML
 - **Frontend**: React 18, Vite, TypeScript, TailwindCSS, Recharts
-- **LLM**: Qwen `qwen-max` via DashScope API
+- **LLM**: OpenAI, Gemini or Qwen via the OpenAI-compatible chat completions API (`LLM_PROVIDER`)
 - **Database**: PostgreSQL 15

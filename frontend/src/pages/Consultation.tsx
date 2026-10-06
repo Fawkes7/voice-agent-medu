@@ -7,6 +7,8 @@ import EvalSidebar from "../components/EvalSidebar";
 import TutorHint from "../components/TutorHint";
 import Timer from "../components/Timer";
 import WorksheetPanel from "../components/WorksheetPanel";
+import VoiceMicBar from "../components/VoiceMicBar";
+import { useFlashTts } from "../hooks/useFlashTts";
 
 interface Props {
   user: UserResponse;
@@ -16,6 +18,9 @@ export default function Consultation({ user }: Props) {
   const { caseId } = useParams<{ caseId: string }>();
   const navigate = useNavigate();
   const ws = useWebSocket();
+  const tts = useFlashTts();
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const [voiceLanguage, setVoiceLanguage] = useState("zh");
 
   const [caseInfo, setCaseInfo] = useState<any | null>(null);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
@@ -53,6 +58,16 @@ export default function Consultation({ user }: Props) {
       api.cases.get(caseId).then(setCaseInfo).catch(console.error);
     }
   }, [caseId]);
+
+  useEffect(() => {
+    api.voice
+      .config()
+      .then((cfg) => {
+        setVoiceEnabled(cfg.enabled);
+        if (cfg.language_code) setVoiceLanguage(cfg.language_code);
+      })
+      .catch(() => setVoiceEnabled(false));
+  }, []);
 
   useEffect(() => {
     ws.connect();
@@ -115,6 +130,7 @@ export default function Consultation({ user }: Props) {
 
         case "patient_response":
           setIsTyping(false);
+          if (msg.content) tts.speak(msg.content, "patient");
           setChatMessages((prev) => [
             ...prev,
             {
@@ -137,6 +153,7 @@ export default function Consultation({ user }: Props) {
           break;
 
         case "tutor_hint":
+          if (msg.content) tts.speak(msg.content, "tutor");
           setTutorHint({
             content: msg.content || "",
             level: msg.hint_level || "moderate",
@@ -153,6 +170,7 @@ export default function Consultation({ user }: Props) {
           break;
 
         case "session_summary":
+          tts.stop();
           setIsTyping(false);
           setIsEnding(false);
           setSessionActive(false);
@@ -174,6 +192,7 @@ export default function Consultation({ user }: Props) {
 
   const handleSend = useCallback(
     (content: string) => {
+      tts.stop();
       setErrorBanner(null);
       setIsTyping(true);
       setChatMessages((prev) => [
@@ -186,7 +205,7 @@ export default function Consultation({ user }: Props) {
         setErrorBanner("连接已断开，无法发送。请点击「重新连接」后再试。");
       }
     },
-    [ws]
+    [ws, tts]
   );
 
   const handleReconnect = useCallback(() => {
@@ -427,7 +446,7 @@ export default function Consultation({ user }: Props) {
             <div className="h-4 w-px bg-slate-200" />
             <div>
               <span className="text-sm font-medium text-slate-700">
-                患者: {patientName}
+                语音问诊 · 患者: {patientName}
               </span>
               <span className="text-xs text-slate-400 ml-2">
                 {caseInfo?.patient_profile?.gender} / {caseInfo?.patient_profile?.age}岁
@@ -500,6 +519,15 @@ export default function Consultation({ user }: Props) {
             disabled={!sessionActive || wsBroken}
             patientName={patientName}
             isTyping={isTyping}
+            footer={
+              <VoiceMicBar
+                enabled={voiceEnabled}
+                disabled={!sessionActive || wsBroken || isTyping}
+                ttsPlaying={tts.isSpeaking}
+                languageCode={voiceLanguage}
+                onUtterance={handleSend}
+              />
+            }
           />
         </div>
       </div>

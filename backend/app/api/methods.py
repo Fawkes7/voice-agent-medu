@@ -6,9 +6,9 @@ router = APIRouter(prefix="/api/methods", tags=["methods"])
 METHODS = [
     {
         "id": "multi_agent",
-        "name": "多智能体学习 (MA)",
-        "short": "MA",
-        "description": "完整的三智能体协作：AI-SP 模拟病人，旁观导师在你陷入困境时给出苏格拉底式提问，隐形评估器实时为 OSCE 量表打勾。",
+        "name": "语音多智能体学习 (MA)",
+        "short": "Voice MA",
+        "description": "保持原多智能体协作（AI-SP + 导师 + 轮次评估器），学生通过语音问诊：Scribe v2 Realtime 识别提问，Eleven Flash v2.5 朗读病人与导师回复。仍可用文字作为备用输入。",
         "interactive": True,
         "uses_ws": True,
         "shows_evaluation": True,

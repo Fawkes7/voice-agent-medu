@@ -29,7 +29,7 @@ interface Props {
 }
 
 const METHOD_META: Record<string, { label: string; cls: string }> = {
-  multi_agent: { label: "MA · 多智能体", cls: "bg-blue-50 text-blue-700" },
+  multi_agent: { label: "MA · 语音多智能体", cls: "bg-blue-50 text-blue-700" },
   single_agent: { label: "SA · 单智能体", cls: "bg-sky-50 text-sky-700" },
   control: { label: "CT · 对照学习", cls: "bg-emerald-50 text-emerald-700" },
   exam: { label: "Exam · 考试", cls: "bg-amber-50 text-amber-700" },
