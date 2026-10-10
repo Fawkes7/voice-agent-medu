@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 1440
     QWEN_MODEL: str = "qwen-max"
+    # Doctor → SP emotion shift (notebook-aligned rubric)
+    QWEN_OMNI_MODEL: str = "qwen3.8-omni-flash"
+    DOCTOR_ATTITUDE_USE_LLM: bool = True
     CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
 
     model_config = {"env_file": ".env", "extra": "ignore"}
