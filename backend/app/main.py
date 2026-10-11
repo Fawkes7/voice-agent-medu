@@ -4,10 +4,13 @@ import os
 import sys
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 from urllib.parse import urlparse
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from jose import JWTError, jwt
 from sqlalchemy import text
 
@@ -451,3 +454,28 @@ async def websocket_consultation(websocket: WebSocket):
             await heartbeat_task
         except Exception:
             pass
+
+
+# Serve built frontend (single-port demo / Cloud Agent testing).
+# Must be registered after API and WebSocket routes.
+_FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+if _FRONTEND_DIST.is_dir():
+    _assets = _FRONTEND_DIST / "assets"
+    if _assets.is_dir():
+        app.mount("/assets", StaticFiles(directory=str(_assets)), name="frontend-assets")
+
+    @app.get("/")
+    async def spa_index():
+        return FileResponse(_FRONTEND_DIST / "index.html")
+
+    @app.get("/{full_path:path}")
+    async def spa_fallback(full_path: str):
+        # Do not shadow API / health / docs — those are registered above.
+        candidate = (_FRONTEND_DIST / full_path).resolve()
+        if str(candidate).startswith(str(_FRONTEND_DIST.resolve())) and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(_FRONTEND_DIST / "index.html")
+
+    logger.info("Serving frontend from %s", _FRONTEND_DIST)
+else:
+    logger.warning("Frontend dist not found at %s — API-only mode", _FRONTEND_DIST)
