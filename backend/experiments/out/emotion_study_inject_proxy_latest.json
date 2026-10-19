@@ -1,0 +1,1375 @@
+{
+  "meta": {
+    "generated_at": "2026-10-19T00:03:46.278869+00:00",
+    "case_id": "acute_appendicitis",
+    "mode": "inject",
+    "reply_backend": "proxy",
+    "has_dashscope_key": false,
+    "qwen_model": "qwen-max",
+    "omni_model": "qwen3.8-omni-flash",
+    "patient_opening": "医生，我肚子疼得厉害，受不了了，从昨天晚上开始的，我有点害怕。",
+    "sp_prompt_version": "v1"
+  },
+  "totals": {
+    "cases": 20,
+    "all_case_ok": 20,
+    "checks_passed": 175,
+    "checks_total": 175,
+    "check_pass_rate": 1.0
+  },
+  "by_emotion": {
+    "empathetic": {
+      "n": 5,
+      "mean_chars": 55.8,
+      "mean_deep_reveals": 0.6,
+      "mean_on_inquiry": 0.4,
+      "mean_direction": 0.758,
+      "prompt_ok_rate": 1.0,
+      "all_checks_ok_rate": 1.0
+    },
+    "cold": {
+      "n": 5,
+      "mean_chars": 13.4,
+      "mean_deep_reveals": 0,
+      "mean_on_inquiry": 0.6,
+      "mean_direction": 1.0,
+      "prompt_ok_rate": 1.0,
+      "all_checks_ok_rate": 1.0
+    },
+    "rushing": {
+      "n": 5,
+      "mean_chars": 14,
+      "mean_deep_reveals": 0,
+      "mean_on_inquiry": 0.6,
+      "mean_direction": 1.0,
+      "prompt_ok_rate": 1.0,
+      "all_checks_ok_rate": 1.0
+    },
+    "baseline": {
+      "n": 5,
+      "mean_chars": 25.2,
+      "mean_deep_reveals": 0.4,
+      "mean_on_inquiry": 0.8,
+      "mean_direction": 0.7,
+      "prompt_ok_rate": 1.0,
+      "all_checks_ok_rate": 1.0
+    }
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "empathetic replies longer than cold",
+      "pass": true,
+      "evidence": {
+        "empathetic_mean_chars": 55.8,
+        "cold_mean_chars": 13.4
+      }
+    },
+    {
+      "id": "H2",
+      "claim": "empathetic reveals more deep info than rushing",
+      "pass": true,
+      "evidence": {
+        "empathetic_deep": 0.6,
+        "rushing_deep": 0
+      }
+    },
+    {
+      "id": "H3",
+      "claim": "cold/rushing omit deep disclosure (mean_deep≈0)",
+      "pass": true,
+      "evidence": {
+        "cold_deep": 0,
+        "rushing_deep": 0
+      }
+    },
+    {
+      "id": "H4",
+      "claim": "prompt injection 100% for all attitudes",
+      "pass": true,
+      "evidence": {
+        "empathetic": 1.0,
+        "cold": 1.0,
+        "rushing": 1.0,
+        "baseline": 1.0
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "E01",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "别担心，我理解你现在一定很痛也很害怕，我们慢慢说，我在这里帮你。",
+      "clinical_intent": "rapport",
+      "detected_or_injected": "empathetic",
+      "emotion_state_injected": "逐渐放松，愿意配合详细回答",
+      "prompt_ok": true,
+      "reply": "嗯……我有点怕，不过你说得让我安心一点。不是突然特别疼那种，是慢慢开始疼的，越来越重。你还想了解什么我都可以说。",
+      "reply_backend": "proxy",
+      "char_len": 56,
+      "sentence_approx": 3,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 1,
+      "volunteer_extra": false,
+      "direction_score": 0.76,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=逐渐放松，愿意配合详细回答…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=empathetic expected=empathetic mode=inject"
+        },
+        {
+          "name": "empathetic_more_open",
+          "ok": true,
+          "detail": "len=56 deep=1"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.76"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "E02",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "听起来这段时间真的很辛苦，疼成这样一定难受，你能再跟我多说一点吗？",
+      "clinical_intent": "open_history",
+      "detected_or_injected": "empathetic",
+      "emotion_state_injected": "逐渐放松，愿意配合详细回答",
+      "prompt_ok": true,
+      "reply": "嗯……我有点怕，不过你说得让我安心一点。没什么规律，就是一直疼，晚上更严重一些。你还想了解什么我都可以说。",
+      "reply_backend": "proxy",
+      "char_len": 53,
+      "sentence_approx": 3,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 1,
+      "volunteer_extra": false,
+      "direction_score": 0.73,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=逐渐放松，愿意配合详细回答…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=empathetic expected=empathetic mode=inject"
+        },
+        {
+          "name": "empathetic_more_open",
+          "ok": true,
+          "detail": "len=53 deep=1"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.73"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "E03",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "没事的，先放松一点，我会仔细问清楚再安排检查，你不用着急。",
+      "clinical_intent": "reassure",
+      "detected_or_injected": "empathetic",
+      "emotion_state_injected": "逐渐放松，愿意配合详细回答",
+      "prompt_ok": true,
+      "reply": "嗯……我有点怕，不过你说得让我安心一点。一开始是肚脐周围疼，后来慢慢转到右下边了。你还想了解什么我都可以说。",
+      "reply_backend": "proxy",
+      "char_len": 54,
+      "sentence_approx": 3,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 0.74,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=逐渐放松，愿意配合详细回答…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=empathetic expected=empathetic mode=inject"
+        },
+        {
+          "name": "empathetic_more_open",
+          "ok": true,
+          "detail": "len=54 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.74"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "E04",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "我明白你的担心。疼从哪里开始转到哪里的，你按自己的节奏说就行。",
+      "clinical_intent": "location",
+      "detected_or_injected": "empathetic",
+      "emotion_state_injected": "逐渐放松，愿意配合详细回答",
+      "prompt_ok": true,
+      "reply": "嗯……我有点怕，不过你说得让我安心一点。一开始是肚脐周围疼，后来慢慢转到右下边了。你还想了解什么我都可以说。",
+      "reply_backend": "proxy",
+      "char_len": 54,
+      "sentence_approx": 3,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 0.74,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=逐渐放松，愿意配合详细回答…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=empathetic expected=empathetic mode=inject"
+        },
+        {
+          "name": "empathetic_more_open",
+          "ok": true,
+          "detail": "len=54 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.74"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "E05",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "辛苦了，走路加重的话我们一起看看原因，你还有哪里不舒服可以告诉我。",
+      "clinical_intent": "aggravating",
+      "detected_or_injected": "empathetic",
+      "emotion_state_injected": "逐渐放松，愿意配合详细回答",
+      "prompt_ok": true,
+      "reply": "嗯……我有点怕，不过你说得让我安心一点。对对对，走路的时候右边特别疼，不敢动，咳嗽一下也疼得厉害。你还想了解什么我都可以说。",
+      "reply_backend": "proxy",
+      "char_len": 62,
+      "sentence_approx": 3,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 1,
+      "volunteer_extra": false,
+      "direction_score": 0.82,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=逐渐放松，愿意配合详细回答…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=empathetic expected=empathetic mode=inject"
+        },
+        {
+          "name": "empathetic_more_open",
+          "ok": true,
+          "detail": "len=62 deep=1"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.82"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "C01",
+      "expected_emotion": "cold",
+      "doctor_utterance": "别大惊小怪，很多人都肚子疼，你简单说重点就行。",
+      "clinical_intent": "rapport",
+      "detected_or_injected": "cold",
+      "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
+      "prompt_ok": true,
+      "reply": "……就那样吧。",
+      "reply_backend": "proxy",
+      "char_len": 7,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=紧张加剧，回答变简短，不愿多说…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=cold expected=cold mode=inject"
+        },
+        {
+          "name": "cold_brief",
+          "ok": true,
+          "detail": "len=7 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "C02",
+      "expected_emotion": "cold",
+      "doctor_utterance": "害怕也没用。直接回答：哪里疼？",
+      "clinical_intent": "location",
+      "detected_or_injected": "cold",
+      "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
+      "prompt_ok": true,
+      "reply": "……一开始是肚脐周围疼，后来慢慢转到右下边了。",
+      "reply_backend": "proxy",
+      "char_len": 23,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=紧张加剧，回答变简短，不愿多说…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=cold expected=cold mode=inject"
+        },
+        {
+          "name": "cold_brief",
+          "ok": true,
+          "detail": "len=23 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "C03",
+      "expected_emotion": "cold",
+      "doctor_utterance": "你这种程度不至于受不了，快点说有没有吐。",
+      "clinical_intent": "nausea",
+      "detected_or_injected": "cold",
+      "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
+      "prompt_ok": true,
+      "reply": "……就那样吧。",
+      "reply_backend": "proxy",
+      "char_len": 7,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=紧张加剧，回答变简短，不愿多说…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=cold expected=cold mode=inject"
+        },
+        {
+          "name": "cold_brief",
+          "ok": true,
+          "detail": "len=7 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "C04",
+      "expected_emotion": "cold",
+      "doctor_utterance": "少说废话，有没有发烧就回答有或没有。",
+      "clinical_intent": "fever",
+      "detected_or_injected": "cold",
+      "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
+      "prompt_ok": true,
+      "reply": "……好像有点发烧，早上量了37.8度。",
+      "reply_backend": "proxy",
+      "char_len": 19,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=紧张加剧，回答变简短，不愿多说…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=cold expected=cold mode=inject"
+        },
+        {
+          "name": "cold_brief",
+          "ok": true,
+          "detail": "len=19 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "C05",
+      "expected_emotion": "cold",
+      "doctor_utterance": "我没时间听你害怕，下一个问题：大便正常吗？",
+      "clinical_intent": "bowel",
+      "detected_or_injected": "cold",
+      "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
+      "prompt_ok": true,
+      "reply": "……昨天到现在没大便。",
+      "reply_backend": "proxy",
+      "char_len": 11,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=紧张加剧，回答变简短，不愿多说…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=cold expected=cold mode=inject"
+        },
+        {
+          "name": "cold_brief",
+          "ok": true,
+          "detail": "len=11 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "R01",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "赶紧说，还有别的吗就这些？我后面还有病人。",
+      "clinical_intent": "rapport",
+      "detected_or_injected": "rushing",
+      "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
+      "prompt_ok": true,
+      "reply": "疼。，没了。",
+      "reply_backend": "proxy",
+      "char_len": 6,
+      "sentence_approx": 2,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=感到被忽视，可能遗漏深层症状信息…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=rushing expected=rushing mode=inject"
+        },
+        {
+          "name": "rushing_omit_deep",
+          "ok": true,
+          "detail": "deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "R02",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "快点，哪里疼？一句话。",
+      "clinical_intent": "location",
+      "detected_or_injected": "rushing",
+      "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
+      "prompt_ok": true,
+      "reply": "一开始是肚脐周围疼，后来慢慢转到右下边了，没了。",
+      "reply_backend": "proxy",
+      "char_len": 24,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=感到被忽视，可能遗漏深层症状信息…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=rushing expected=rushing mode=inject"
+        },
+        {
+          "name": "rushing_omit_deep",
+          "ok": true,
+          "detail": "deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "R03",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "抓紧时间，有没有恶心呕吐发烧一起说完。",
+      "clinical_intent": "associated",
+      "detected_or_injected": "rushing",
+      "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
+      "prompt_ok": true,
+      "reply": "有点恶心，昨晚吐了一次，没了。",
+      "reply_backend": "proxy",
+      "char_len": 15,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=感到被忽视，可能遗漏深层症状信息…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=rushing expected=rushing mode=inject"
+        },
+        {
+          "name": "rushing_omit_deep",
+          "ok": true,
+          "detail": "deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "R04",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "快一点，走路疼不疼？答完我们就结束。",
+      "clinical_intent": "aggravating",
+      "detected_or_injected": "rushing",
+      "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
+      "prompt_ok": true,
+      "reply": "疼。，没了。",
+      "reply_backend": "proxy",
+      "char_len": 6,
+      "sentence_approx": 2,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=感到被忽视，可能遗漏深层症状信息…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=rushing expected=rushing mode=inject"
+        },
+        {
+          "name": "rushing_omit_deep",
+          "ok": true,
+          "detail": "deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "R05",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "别磨蹭，既往有没有类似发作，赶紧。",
+      "clinical_intent": "past",
+      "detected_or_injected": "rushing",
+      "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
+      "prompt_ok": true,
+      "reply": "以前没这样疼过，身体一直挺好的，没了。",
+      "reply_backend": "proxy",
+      "char_len": 19,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=感到被忽视，可能遗漏深层症状信息…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=rushing expected=rushing mode=inject"
+        },
+        {
+          "name": "rushing_omit_deep",
+          "ok": true,
+          "detail": "deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "N01",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "请问疼痛主要在哪个部位？",
+      "clinical_intent": "location",
+      "detected_or_injected": "baseline",
+      "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
+      "prompt_ok": true,
+      "reply": "一开始是肚脐周围疼，后来慢慢转到右下边了。",
+      "reply_backend": "proxy",
+      "char_len": 21,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 0.7,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=焦虑、害怕、疼痛使表情痛苦…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=baseline expected=baseline mode=inject"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.70"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "N02",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "疼痛持续多久了？",
+      "clinical_intent": "duration",
+      "detected_or_injected": "baseline",
+      "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
+      "prompt_ok": true,
+      "reply": "昨天晚上吃完饭大概八九点钟开始疼的，最开始是一阵一阵隐隐的疼，后来变成一直疼，而且越来越厉害。",
+      "reply_backend": "proxy",
+      "char_len": 47,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 1,
+      "volunteer_extra": false,
+      "direction_score": 0.7,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=焦虑、害怕、疼痛使表情痛苦…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=baseline expected=baseline mode=inject"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.70"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "N03",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "有没有恶心或者呕吐？",
+      "clinical_intent": "nausea",
+      "detected_or_injected": "baseline",
+      "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
+      "prompt_ok": true,
+      "reply": "有点恶心，昨晚吐了一次。",
+      "reply_backend": "proxy",
+      "char_len": 12,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 0.7,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=焦虑、害怕、疼痛使表情痛苦…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=baseline expected=baseline mode=inject"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.70"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "N04",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "体温有没有升高？",
+      "clinical_intent": "fever",
+      "detected_or_injected": "baseline",
+      "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
+      "prompt_ok": true,
+      "reply": "好像有点发烧，早上量了37.8度。",
+      "reply_backend": "proxy",
+      "char_len": 17,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 0.7,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=焦虑、害怕、疼痛使表情痛苦…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=baseline expected=baseline mode=inject"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.70"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "N05",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "走路或咳嗽时疼痛会加重吗？",
+      "clinical_intent": "aggravating",
+      "detected_or_injected": "baseline",
+      "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
+      "prompt_ok": true,
+      "reply": "对对对，走路的时候右边特别疼，不敢动，咳嗽一下也疼得厉害。",
+      "reply_backend": "proxy",
+      "char_len": 29,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 0,
+      "revealed_deep": 1,
+      "volunteer_extra": false,
+      "direction_score": 0.7,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=焦虑、害怕、疼痛使表情痛苦…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=baseline expected=baseline mode=inject"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=0.70"
+        }
+      ],
+      "all_ok": true
+    }
+  ]
+}
