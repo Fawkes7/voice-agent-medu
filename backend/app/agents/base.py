@@ -30,16 +30,21 @@ async def call_qwen(
     temperature: float = 0.7,
     response_format: str | None = None,
     timeout: float = LLM_CALL_TIMEOUT_SECONDS,
+    model: str | None = None,
+    enable_thinking: bool | None = None,
 ) -> str:
     """Call Qwen model via DashScope API in a worker thread, with timeout."""
     full_messages = [{"role": "system", "content": system_prompt}] + messages
 
     kwargs = {
-        "model": settings.QWEN_MODEL,
+        "model": model or settings.QWEN_MODEL,
         "messages": full_messages,
         "temperature": temperature,
         "result_format": "message",
     }
+
+    if enable_thinking is not None:
+        kwargs["enable_thinking"] = enable_thinking
 
     if response_format == "json":
         kwargs["response_format"] = {"type": "json_object"}

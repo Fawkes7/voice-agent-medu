@@ -1,6 +1,5 @@
-import re
-
 from app.agents.base import call_qwen
+from app.agents.doctor_attitude import detect_sp_emotion_shift
 from app.prompts import PromptRegistry
 
 
@@ -56,31 +55,6 @@ def build_sp_system_prompt(case_data: dict, current_emotion: str = "baseline") -
     )
 
 
-def detect_emotion_shift(message: str) -> str:
-    """Detect doctor's attitude from their message to adjust SP emotion."""
-    empathetic_patterns = [
-        r"别[担着]心", r"没事", r"放松", r"慢慢说", r"理解",
-        r"辛苦", r"不要紧张", r"我[会来]帮", r"别怕",
-    ]
-    cold_patterns = [
-        r"快[说点]", r"简单说", r"直接[说回]答", r"下一个",
-    ]
-    rushing_patterns = [
-        r"赶紧", r"快[点些]", r"抓紧", r"还有别的吗就这些",
-    ]
-
-    for p in empathetic_patterns:
-        if re.search(p, message):
-            return "empathetic"
-    for p in cold_patterns:
-        if re.search(p, message):
-            return "cold"
-    for p in rushing_patterns:
-        if re.search(p, message):
-            return "rushing"
-    return "baseline"
-
-
 async def generate_sp_response(
     case_data: dict,
     conversation_history: list[dict],
@@ -92,9 +66,13 @@ async def generate_sp_response(
     """
     if conversation_history:
         last_msg = conversation_history[-1].get("content", "")
-        new_emotion = detect_emotion_shift(last_msg)
-        if new_emotion != "baseline":
-            current_emotion = new_emotion
+        if conversation_history[-1].get("role") == "student":
+            new_emotion = await detect_sp_emotion_shift(
+                last_msg,
+                conversation_history=conversation_history,
+            )
+            if new_emotion != "baseline":
+                current_emotion = new_emotion
 
     system_prompt = build_sp_system_prompt(case_data, current_emotion)
 

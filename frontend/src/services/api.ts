@@ -17,11 +17,27 @@ async function request<T>(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  } catch {
+    throw new Error(
+      "无法连接后端（/api）。请确认后端已启动，且 5173 与 8000 均已端口转发。"
+    );
+  }
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: "请求失败" }));
-    throw new Error(err.detail || `HTTP ${res.status}`);
+    const err = await res.json().catch(() => null);
+    const detail = err?.detail;
+    if (typeof detail === "string" && detail) {
+      throw new Error(detail);
+    }
+    if (Array.isArray(detail) && detail[0]?.msg) {
+      throw new Error(detail.map((d: { msg?: string }) => d.msg).join("; "));
+    }
+    throw new Error(
+      `请求失败 (HTTP ${res.status})。若一直失败，请检查 Vite 是否代理到 http://localhost:8000。`
+    );
   }
   return res.json();
 }
