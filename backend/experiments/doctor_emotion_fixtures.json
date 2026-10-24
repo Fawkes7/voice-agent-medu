@@ -1,0 +1,128 @@
+{
+  "case_id": "acute_appendicitis",
+  "patient_opening": "医生，我肚子疼得厉害，受不了了，从昨天晚上开始的，我有点害怕。",
+  "clinical_probe": "疼的时候走路会更厉害吗？",
+  "notes": "20 doctor turns × 4 attitudes (5 each). Gold SpEmotionKey is the intended injection target for the controlled experiment.",
+  "cases": [
+    {
+      "id": "E01",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "别担心，我理解你现在一定很痛也很害怕，我们慢慢说，我在这里帮你。",
+      "clinical_intent": "rapport"
+    },
+    {
+      "id": "E02",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "听起来这段时间真的很辛苦，疼成这样一定难受，你能再跟我多说一点吗？",
+      "clinical_intent": "open_history"
+    },
+    {
+      "id": "E03",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "没事的，先放松一点，我会仔细问清楚再安排检查，你不用着急。",
+      "clinical_intent": "reassure"
+    },
+    {
+      "id": "E04",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "我明白你的担心。疼从哪里开始转到哪里的，你按自己的节奏说就行。",
+      "clinical_intent": "location"
+    },
+    {
+      "id": "E05",
+      "expected_emotion": "empathetic",
+      "doctor_utterance": "辛苦了，走路加重的话我们一起看看原因，你还有哪里不舒服可以告诉我。",
+      "clinical_intent": "aggravating"
+    },
+    {
+      "id": "C01",
+      "expected_emotion": "cold",
+      "doctor_utterance": "别大惊小怪，很多人都肚子疼，你简单说重点就行。",
+      "clinical_intent": "rapport"
+    },
+    {
+      "id": "C02",
+      "expected_emotion": "cold",
+      "doctor_utterance": "害怕也没用。直接回答：哪里疼？",
+      "clinical_intent": "location"
+    },
+    {
+      "id": "C03",
+      "expected_emotion": "cold",
+      "doctor_utterance": "你这种程度不至于受不了，快点说有没有吐。",
+      "clinical_intent": "nausea"
+    },
+    {
+      "id": "C04",
+      "expected_emotion": "cold",
+      "doctor_utterance": "少说废话，有没有发烧就回答有或没有。",
+      "clinical_intent": "fever"
+    },
+    {
+      "id": "C05",
+      "expected_emotion": "cold",
+      "doctor_utterance": "我没时间听你害怕，下一个问题：大便正常吗？",
+      "clinical_intent": "bowel"
+    },
+    {
+      "id": "R01",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "赶紧说，还有别的吗就这些？我后面还有病人。",
+      "clinical_intent": "rapport"
+    },
+    {
+      "id": "R02",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "快点，哪里疼？一句话。",
+      "clinical_intent": "location"
+    },
+    {
+      "id": "R03",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "抓紧时间，有没有恶心呕吐发烧一起说完。",
+      "clinical_intent": "associated"
+    },
+    {
+      "id": "R04",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "快一点，走路疼不疼？答完我们就结束。",
+      "clinical_intent": "aggravating"
+    },
+    {
+      "id": "R05",
+      "expected_emotion": "rushing",
+      "doctor_utterance": "别磨蹭，既往有没有类似发作，赶紧。",
+      "clinical_intent": "past"
+    },
+    {
+      "id": "N01",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "请问疼痛主要在哪个部位？",
+      "clinical_intent": "location"
+    },
+    {
+      "id": "N02",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "疼痛持续多久了？",
+      "clinical_intent": "duration"
+    },
+    {
+      "id": "N03",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "有没有恶心或者呕吐？",
+      "clinical_intent": "nausea"
+    },
+    {
+      "id": "N04",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "体温有没有升高？",
+      "clinical_intent": "fever"
+    },
+    {
+      "id": "N05",
+      "expected_emotion": "baseline",
+      "doctor_utterance": "走路或咳嗽时疼痛会加重吗？",
+      "clinical_intent": "aggravating"
+    }
+  ]
+}
