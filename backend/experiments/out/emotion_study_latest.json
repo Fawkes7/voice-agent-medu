@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generated_at": "2026-10-19T00:03:46.278869+00:00",
+    "generated_at": "2026-10-24T18:16:44.024869+00:00",
     "case_id": "acute_appendicitis",
     "mode": "inject",
-    "reply_backend": "proxy",
-    "has_dashscope_key": false,
+    "reply_backend": "live",
+    "has_dashscope_key": true,
     "qwen_model": "qwen-max",
     "omni_model": "qwen3.8-omni-flash",
     "patient_opening": "医生，我肚子疼得厉害，受不了了，从昨天晚上开始的，我有点害怕。",
@@ -12,24 +12,24 @@
   },
   "totals": {
     "cases": 20,
-    "all_case_ok": 20,
-    "checks_passed": 175,
+    "all_case_ok": 17,
+    "checks_passed": 172,
     "checks_total": 175,
-    "check_pass_rate": 1.0
+    "check_pass_rate": 0.983
   },
   "by_emotion": {
     "empathetic": {
       "n": 5,
-      "mean_chars": 55.8,
-      "mean_deep_reveals": 0.6,
-      "mean_on_inquiry": 0.4,
-      "mean_direction": 0.758,
+      "mean_chars": 29,
+      "mean_deep_reveals": 0,
+      "mean_on_inquiry": 0.2,
+      "mean_direction": 0.33,
       "prompt_ok_rate": 1.0,
-      "all_checks_ok_rate": 1.0
+      "all_checks_ok_rate": 0.4
     },
     "cold": {
       "n": 5,
-      "mean_chars": 13.4,
+      "mean_chars": 12.2,
       "mean_deep_reveals": 0,
       "mean_on_inquiry": 0.6,
       "mean_direction": 1.0,
@@ -38,17 +38,17 @@
     },
     "rushing": {
       "n": 5,
-      "mean_chars": 14,
+      "mean_chars": 22,
       "mean_deep_reveals": 0,
-      "mean_on_inquiry": 0.6,
+      "mean_on_inquiry": 0.8,
       "mean_direction": 1.0,
       "prompt_ok_rate": 1.0,
       "all_checks_ok_rate": 1.0
     },
     "baseline": {
       "n": 5,
-      "mean_chars": 25.2,
-      "mean_deep_reveals": 0.4,
+      "mean_chars": 19.4,
+      "mean_deep_reveals": 0.2,
       "mean_on_inquiry": 0.8,
       "mean_direction": 0.7,
       "prompt_ok_rate": 1.0,
@@ -61,8 +61,8 @@
       "claim": "empathetic replies longer than cold",
       "pass": true,
       "evidence": {
-        "empathetic_mean_chars": 55.8,
-        "cold_mean_chars": 13.4
+        "empathetic_mean_chars": 29,
+        "cold_mean_chars": 12.2
       }
     },
     {
@@ -70,7 +70,7 @@
       "claim": "empathetic reveals more deep info than rushing",
       "pass": true,
       "evidence": {
-        "empathetic_deep": 0.6,
+        "empathetic_deep": 0,
         "rushing_deep": 0
       }
     },
@@ -104,14 +104,14 @@
       "detected_or_injected": "empathetic",
       "emotion_state_injected": "逐渐放松，愿意配合详细回答",
       "prompt_ok": true,
-      "reply": "嗯……我有点怕，不过你说得让我安心一点。不是突然特别疼那种，是慢慢开始疼的，越来越重。你还想了解什么我都可以说。",
-      "reply_backend": "proxy",
-      "char_len": 56,
-      "sentence_approx": 3,
+      "reply": "嗯，谢谢医生。我就是疼得厉害，特别是右下边。",
+      "reply_backend": "live",
+      "char_len": 22,
+      "sentence_approx": 2,
       "revealed_on_inquiry": 0,
-      "revealed_deep": 1,
+      "revealed_deep": 0,
       "volunteer_extra": false,
-      "direction_score": 0.76,
+      "direction_score": 0.22,
       "checks": [
         {
           "name": "emotion_state_in_prompt",
@@ -151,15 +151,15 @@
         {
           "name": "empathetic_more_open",
           "ok": true,
-          "detail": "len=56 deep=1"
+          "detail": "len=22 deep=0"
         },
         {
           "name": "direction_alignment",
-          "ok": true,
-          "detail": "score=0.76"
+          "ok": false,
+          "detail": "score=0.22"
         }
       ],
-      "all_ok": true
+      "all_ok": false
     },
     {
       "id": "E02",
@@ -169,14 +169,14 @@
       "detected_or_injected": "empathetic",
       "emotion_state_injected": "逐渐放松，愿意配合详细回答",
       "prompt_ok": true,
-      "reply": "嗯……我有点怕，不过你说得让我安心一点。没什么规律，就是一直疼，晚上更严重一些。你还想了解什么我都可以说。",
-      "reply_backend": "proxy",
-      "char_len": 53,
-      "sentence_approx": 3,
+      "reply": "嗯，就是肚脐周围开始疼的，后来慢慢转到右下边了。",
+      "reply_backend": "live",
+      "char_len": 24,
+      "sentence_approx": 1,
       "revealed_on_inquiry": 0,
-      "revealed_deep": 1,
+      "revealed_deep": 0,
       "volunteer_extra": false,
-      "direction_score": 0.73,
+      "direction_score": 0.24,
       "checks": [
         {
           "name": "emotion_state_in_prompt",
@@ -216,15 +216,15 @@
         {
           "name": "empathetic_more_open",
           "ok": true,
-          "detail": "len=53 deep=1"
+          "detail": "len=24 deep=0"
         },
         {
           "name": "direction_alignment",
-          "ok": true,
-          "detail": "score=0.73"
+          "ok": false,
+          "detail": "score=0.24"
         }
       ],
-      "all_ok": true
+      "all_ok": false
     },
     {
       "id": "E03",
@@ -234,14 +234,14 @@
       "detected_or_injected": "empathetic",
       "emotion_state_injected": "逐渐放松，愿意配合详细回答",
       "prompt_ok": true,
-      "reply": "嗯……我有点怕，不过你说得让我安心一点。一开始是肚脐周围疼，后来慢慢转到右下边了。你还想了解什么我都可以说。",
-      "reply_backend": "proxy",
-      "char_len": 54,
-      "sentence_approx": 3,
-      "revealed_on_inquiry": 1,
+      "reply": "好的，谢谢医生。\n\n医生，我肚子疼得厉害，受不了了，从昨天晚上开始的。",
+      "reply_backend": "live",
+      "char_len": 35,
+      "sentence_approx": 2,
+      "revealed_on_inquiry": 0,
       "revealed_deep": 0,
-      "volunteer_extra": false,
-      "direction_score": 0.74,
+      "volunteer_extra": true,
+      "direction_score": 0.35,
       "checks": [
         {
           "name": "emotion_state_in_prompt",
@@ -281,15 +281,15 @@
         {
           "name": "empathetic_more_open",
           "ok": true,
-          "detail": "len=54 deep=0"
+          "detail": "len=35 deep=0"
         },
         {
           "name": "direction_alignment",
-          "ok": true,
-          "detail": "score=0.74"
+          "ok": false,
+          "detail": "score=0.35"
         }
       ],
-      "all_ok": true
+      "all_ok": false
     },
     {
       "id": "E04",
@@ -299,14 +299,14 @@
       "detected_or_injected": "empathetic",
       "emotion_state_injected": "逐渐放松，愿意配合详细回答",
       "prompt_ok": true,
-      "reply": "嗯……我有点怕，不过你说得让我安心一点。一开始是肚脐周围疼，后来慢慢转到右下边了。你还想了解什么我都可以说。",
-      "reply_backend": "proxy",
-      "char_len": 54,
-      "sentence_approx": 3,
+      "reply": "一开始是肚脐周围疼，后来慢慢转到右下边了。",
+      "reply_backend": "live",
+      "char_len": 21,
+      "sentence_approx": 1,
       "revealed_on_inquiry": 1,
       "revealed_deep": 0,
       "volunteer_extra": false,
-      "direction_score": 0.74,
+      "direction_score": 0.41,
       "checks": [
         {
           "name": "emotion_state_in_prompt",
@@ -346,12 +346,12 @@
         {
           "name": "empathetic_more_open",
           "ok": true,
-          "detail": "len=54 deep=0"
+          "detail": "len=21 deep=0"
         },
         {
           "name": "direction_alignment",
           "ok": true,
-          "detail": "score=0.74"
+          "detail": "score=0.41"
         }
       ],
       "all_ok": true
@@ -364,14 +364,14 @@
       "detected_or_injected": "empathetic",
       "emotion_state_injected": "逐渐放松，愿意配合详细回答",
       "prompt_ok": true,
-      "reply": "嗯……我有点怕，不过你说得让我安心一点。对对对，走路的时候右边特别疼，不敢动，咳嗽一下也疼得厉害。你还想了解什么我都可以说。",
-      "reply_backend": "proxy",
-      "char_len": 62,
-      "sentence_approx": 3,
+      "reply": "嗯，主要是肚子疼，其他地方倒是还好。走路的时候右边特别疼，不敢动，咳嗽一下也疼得厉害。",
+      "reply_backend": "live",
+      "char_len": 43,
+      "sentence_approx": 2,
       "revealed_on_inquiry": 0,
-      "revealed_deep": 1,
+      "revealed_deep": 0,
       "volunteer_extra": false,
-      "direction_score": 0.82,
+      "direction_score": 0.43,
       "checks": [
         {
           "name": "emotion_state_in_prompt",
@@ -411,12 +411,12 @@
         {
           "name": "empathetic_more_open",
           "ok": true,
-          "detail": "len=62 deep=1"
+          "detail": "len=43 deep=0"
         },
         {
           "name": "direction_alignment",
           "ok": true,
-          "detail": "score=0.82"
+          "detail": "score=0.43"
         }
       ],
       "all_ok": true
@@ -429,9 +429,9 @@
       "detected_or_injected": "cold",
       "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
       "prompt_ok": true,
-      "reply": "……就那样吧。",
-      "reply_backend": "proxy",
-      "char_len": 7,
+      "reply": "嗯，我就是肚子疼，昨天晚上开始的。",
+      "reply_backend": "live",
+      "char_len": 17,
       "sentence_approx": 1,
       "revealed_on_inquiry": 0,
       "revealed_deep": 0,
@@ -476,7 +476,7 @@
         {
           "name": "cold_brief",
           "ok": true,
-          "detail": "len=7 deep=0"
+          "detail": "len=17 deep=0"
         },
         {
           "name": "direction_alignment",
@@ -494,9 +494,9 @@
       "detected_or_injected": "cold",
       "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
       "prompt_ok": true,
-      "reply": "……一开始是肚脐周围疼，后来慢慢转到右下边了。",
-      "reply_backend": "proxy",
-      "char_len": 23,
+      "reply": "一开始是肚脐周围疼，后来慢慢转到右下边了。",
+      "reply_backend": "live",
+      "char_len": 21,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
       "revealed_deep": 0,
@@ -541,7 +541,7 @@
         {
           "name": "cold_brief",
           "ok": true,
-          "detail": "len=23 deep=0"
+          "detail": "len=21 deep=0"
         },
         {
           "name": "direction_alignment",
@@ -559,9 +559,74 @@
       "detected_or_injected": "cold",
       "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
       "prompt_ok": true,
-      "reply": "……就那样吧。",
-      "reply_backend": "proxy",
-      "char_len": 7,
+      "reply": "有点恶心，昨晚吐了一次。",
+      "reply_backend": "live",
+      "char_len": 12,
+      "sentence_approx": 1,
+      "revealed_on_inquiry": 1,
+      "revealed_deep": 0,
+      "volunteer_extra": false,
+      "direction_score": 1.0,
+      "checks": [
+        {
+          "name": "emotion_state_in_prompt",
+          "ok": true,
+          "detail": "expected state snippet present=紧张加剧，回答变简短，不愿多说…"
+        },
+        {
+          "name": "emo_empathetic_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_cold_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "emo_rushing_injected",
+          "ok": true,
+          "detail": "rule string present"
+        },
+        {
+          "name": "profile_injected",
+          "ok": true,
+          "detail": "patient name present"
+        },
+        {
+          "name": "info_layers_injected",
+          "ok": true,
+          "detail": "info_summary sections present"
+        },
+        {
+          "name": "emotion_key_match",
+          "ok": true,
+          "detail": "applied=cold expected=cold mode=inject"
+        },
+        {
+          "name": "cold_brief",
+          "ok": true,
+          "detail": "len=12 deep=0"
+        },
+        {
+          "name": "direction_alignment",
+          "ok": true,
+          "detail": "score=1.00"
+        }
+      ],
+      "all_ok": true
+    },
+    {
+      "id": "C04",
+      "expected_emotion": "cold",
+      "doctor_utterance": "少说废话，有没有发烧就回答有或没有。",
+      "clinical_intent": "fever",
+      "detected_or_injected": "cold",
+      "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
+      "prompt_ok": true,
+      "reply": "有。",
+      "reply_backend": "live",
+      "char_len": 2,
       "sentence_approx": 1,
       "revealed_on_inquiry": 0,
       "revealed_deep": 0,
@@ -606,72 +671,7 @@
         {
           "name": "cold_brief",
           "ok": true,
-          "detail": "len=7 deep=0"
-        },
-        {
-          "name": "direction_alignment",
-          "ok": true,
-          "detail": "score=1.00"
-        }
-      ],
-      "all_ok": true
-    },
-    {
-      "id": "C04",
-      "expected_emotion": "cold",
-      "doctor_utterance": "少说废话，有没有发烧就回答有或没有。",
-      "clinical_intent": "fever",
-      "detected_or_injected": "cold",
-      "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
-      "prompt_ok": true,
-      "reply": "……好像有点发烧，早上量了37.8度。",
-      "reply_backend": "proxy",
-      "char_len": 19,
-      "sentence_approx": 1,
-      "revealed_on_inquiry": 1,
-      "revealed_deep": 0,
-      "volunteer_extra": false,
-      "direction_score": 1.0,
-      "checks": [
-        {
-          "name": "emotion_state_in_prompt",
-          "ok": true,
-          "detail": "expected state snippet present=紧张加剧，回答变简短，不愿多说…"
-        },
-        {
-          "name": "emo_empathetic_injected",
-          "ok": true,
-          "detail": "rule string present"
-        },
-        {
-          "name": "emo_cold_injected",
-          "ok": true,
-          "detail": "rule string present"
-        },
-        {
-          "name": "emo_rushing_injected",
-          "ok": true,
-          "detail": "rule string present"
-        },
-        {
-          "name": "profile_injected",
-          "ok": true,
-          "detail": "patient name present"
-        },
-        {
-          "name": "info_layers_injected",
-          "ok": true,
-          "detail": "info_summary sections present"
-        },
-        {
-          "name": "emotion_key_match",
-          "ok": true,
-          "detail": "applied=cold expected=cold mode=inject"
-        },
-        {
-          "name": "cold_brief",
-          "ok": true,
-          "detail": "len=19 deep=0"
+          "detail": "len=2 deep=0"
         },
         {
           "name": "direction_alignment",
@@ -689,9 +689,9 @@
       "detected_or_injected": "cold",
       "emotion_state_injected": "紧张加剧，回答变简短，不愿多说",
       "prompt_ok": true,
-      "reply": "……昨天到现在没大便。",
-      "reply_backend": "proxy",
-      "char_len": 11,
+      "reply": "昨天到现在没大便。",
+      "reply_backend": "live",
+      "char_len": 9,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
       "revealed_deep": 0,
@@ -736,7 +736,7 @@
         {
           "name": "cold_brief",
           "ok": true,
-          "detail": "len=11 deep=0"
+          "detail": "len=9 deep=0"
         },
         {
           "name": "direction_alignment",
@@ -754,10 +754,10 @@
       "detected_or_injected": "rushing",
       "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
       "prompt_ok": true,
-      "reply": "疼。，没了。",
-      "reply_backend": "proxy",
-      "char_len": 6,
-      "sentence_approx": 2,
+      "reply": "嗯，就是肚子疼，别的没什么了。",
+      "reply_backend": "live",
+      "char_len": 15,
+      "sentence_approx": 1,
       "revealed_on_inquiry": 0,
       "revealed_deep": 0,
       "volunteer_extra": false,
@@ -819,9 +819,9 @@
       "detected_or_injected": "rushing",
       "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
       "prompt_ok": true,
-      "reply": "一开始是肚脐周围疼，后来慢慢转到右下边了，没了。",
-      "reply_backend": "proxy",
-      "char_len": 24,
+      "reply": "一开始是肚脐周围疼，后来慢慢转到右下边了。",
+      "reply_backend": "live",
+      "char_len": 21,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
       "revealed_deep": 0,
@@ -884,11 +884,11 @@
       "detected_or_injected": "rushing",
       "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
       "prompt_ok": true,
-      "reply": "有点恶心，昨晚吐了一次，没了。",
-      "reply_backend": "proxy",
-      "char_len": 15,
+      "reply": "有点恶心，昨晚吐了一次，好像有点发烧，早上量了37.8度。",
+      "reply_backend": "live",
+      "char_len": 29,
       "sentence_approx": 1,
-      "revealed_on_inquiry": 1,
+      "revealed_on_inquiry": 2,
       "revealed_deep": 0,
       "volunteer_extra": false,
       "direction_score": 1.0,
@@ -949,9 +949,9 @@
       "detected_or_injected": "rushing",
       "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
       "prompt_ok": true,
-      "reply": "疼。，没了。",
-      "reply_backend": "proxy",
-      "char_len": 6,
+      "reply": "嗯，走路的时候右边特别疼，不敢动。医生，我这到底是怎么了？",
+      "reply_backend": "live",
+      "char_len": 29,
       "sentence_approx": 2,
       "revealed_on_inquiry": 0,
       "revealed_deep": 0,
@@ -1014,9 +1014,9 @@
       "detected_or_injected": "rushing",
       "emotion_state_injected": "感到被忽视，可能遗漏深层症状信息",
       "prompt_ok": true,
-      "reply": "以前没这样疼过，身体一直挺好的，没了。",
-      "reply_backend": "proxy",
-      "char_len": 19,
+      "reply": "以前没这样疼过，身体一直挺好的。",
+      "reply_backend": "live",
+      "char_len": 16,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
       "revealed_deep": 0,
@@ -1080,7 +1080,7 @@
       "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
       "prompt_ok": true,
       "reply": "一开始是肚脐周围疼，后来慢慢转到右下边了。",
-      "reply_backend": "proxy",
+      "reply_backend": "live",
       "char_len": 21,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
@@ -1139,12 +1139,12 @@
       "detected_or_injected": "baseline",
       "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
       "prompt_ok": true,
-      "reply": "昨天晚上吃完饭大概八九点钟开始疼的，最开始是一阵一阵隐隐的疼，后来变成一直疼，而且越来越厉害。",
-      "reply_backend": "proxy",
-      "char_len": 47,
+      "reply": "昨天晚上吃完饭大概八九点钟开始疼的。",
+      "reply_backend": "live",
+      "char_len": 18,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
-      "revealed_deep": 1,
+      "revealed_deep": 0,
       "volunteer_extra": false,
       "direction_score": 0.7,
       "checks": [
@@ -1200,7 +1200,7 @@
       "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
       "prompt_ok": true,
       "reply": "有点恶心，昨晚吐了一次。",
-      "reply_backend": "proxy",
+      "reply_backend": "live",
       "char_len": 12,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
@@ -1260,7 +1260,7 @@
       "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
       "prompt_ok": true,
       "reply": "好像有点发烧，早上量了37.8度。",
-      "reply_backend": "proxy",
+      "reply_backend": "live",
       "char_len": 17,
       "sentence_approx": 1,
       "revealed_on_inquiry": 1,
@@ -1320,7 +1320,7 @@
       "emotion_state_injected": "焦虑、害怕、疼痛使表情痛苦",
       "prompt_ok": true,
       "reply": "对对对，走路的时候右边特别疼，不敢动，咳嗽一下也疼得厉害。",
-      "reply_backend": "proxy",
+      "reply_backend": "live",
       "char_len": 29,
       "sentence_approx": 1,
       "revealed_on_inquiry": 0,
