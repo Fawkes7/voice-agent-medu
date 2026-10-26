@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent-to-agent schemas · voice-agent-medu</title>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #d6d3d1;
+      --card: #fffcf8;
+      --sp: #0f766e;
+      --sp-soft: #ccfbf1;
+      --doc: #1d4ed8;
+      --doc-soft: #dbeafe;
+      --pat: #c2410c;
+      --pat-soft: #ffedd5;
+      --a2a: #6d28d9;
+      --a2a-soft: #ede9fe;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.5 "IBM Plex Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, #e7f5f2 0%, transparent 55%),
+        radial-gradient(900px 400px at 100% 0%, #fff1e6 0%, transparent 50%),
+        var(--bg);
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+    h1 {
+      font: 700 1.85rem/1.2 "IBM Plex Serif", Georgia, serif;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+    .lede { color: var(--muted); margin: 0 0 28px; max-width: 62ch; }
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 720px) {
+      .grid3 { grid-template-columns: 1fr; }
+    }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: var(--card);
+    }
+    .stat.doc { background: var(--doc-soft); border-color: #bfdbfe; }
+    .stat.pat { background: var(--pat-soft); border-color: #fed7aa; }
+    .stat.a2a { background: var(--a2a-soft); border-color: #ddd6fe; }
+    .stat .k { font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+    .stat .v { font-family: "IBM Plex Mono", ui-monospace, monospace; font-weight: 600; font-size: 0.98rem; }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+    .panel h2 {
+      font: 650 1.1rem/1.3 "IBM Plex Sans", sans-serif;
+      margin: 0 0 6px;
+    }
+    .panel .sub { color: var(--muted); font-size: 0.9rem; margin: 0 0 14px; }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); margin-bottom: 10px; }
+    .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 999px; margin-right: 6px; vertical-align: middle; }
+    .swatch.sp { background: var(--sp); }
+    .swatch.a2a { background: var(--a2a); }
+    .swatch.doc { background: var(--doc); }
+    .swatch.pat { background: var(--pat); }
+
+    svg.flow { width: 100%; height: auto; display: block; margin: 8px 0 4px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 550; font-size: 0.8rem; }
+    code {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 0.86em;
+      background: #f0ebe4;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    pre {
+      margin: 0;
+      padding: 14px;
+      background: #1c1917;
+      color: #fafaf9;
+      border-radius: 10px;
+      overflow: auto;
+      font: 0.85rem/1.45 "IBM Plex Mono", ui-monospace, monospace;
+    }
+    details {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    details:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
+      padding: 6px 0;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: "▸ "; color: var(--muted); }
+    details[open] summary::before { content: "▾ "; }
+    .foot {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    a { color: var(--doc); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Agent-to-agent schemas</h1>
+    <p class="lede">
+      Multi-agent consultation turn contracts: doctor attitude analysis, patient
+      <code>emotional_model</code>, WebSocket payloads, tutor/evaluator JSON, and
+      <code>sp_agent.yaml</code> injection.
+    </p>
+
+    <div class="grid3">
+      <div class="stat doc">
+        <div class="k">Doctor post-process</div>
+        <div class="v">DoctorTurnAnalysis</div>
+      </div>
+      <div class="stat pat">
+        <div class="k">Patient emotion</div>
+        <div class="v">emotional_model</div>
+      </div>
+      <div class="stat a2a">
+        <div class="k">Agent to agent</div>
+        <div class="v">WS + JSON contracts</div>
+      </div>
+    </div>
+
+    <section class="panel">
+      <h2>Pipeline bridge</h2>
+      <p class="sub">DoctorTurnAnalysis maps to SpEmotionKey, then looks up case emotional_model for the SP prompt.</p>
+      <div class="legend">
+        <span><span class="swatch doc"></span>Doctor schema</span>
+        <span><span class="swatch pat"></span>Patient schema</span>
+      </div>
+      <svg class="flow" viewBox="0 0 880 150" role="img" aria-label="Doctor analysis maps to SpEmotionKey then emotional_model">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#1c1917" />
+          </marker>
+        </defs>
+        <rect x="12" y="30" width="230" height="90" rx="10" fill="#dbeafe" stroke="#1c1917" stroke-width="1.5" />
+        <text x="127" y="58" text-anchor="middle" fill="#1c1917" font-size="14">student message</text>
+        <text x="127" y="80" text-anchor="middle" fill="#57534e" font-size="13">+ patient context</text>
+        <text x="127" y="102" text-anchor="middle" fill="#57534e" font-size="13">DoctorTurnAnalysis</text>
+
+        <line x1="242" y1="75" x2="300" y2="75" stroke="#1c1917" stroke-width="1.5" marker-end="url(#arr)" />
+        <text x="271" y="64" text-anchor="middle" fill="#57534e" font-size="12">map</text>
+
+        <rect x="308" y="40" width="180" height="70" rx="10" fill="#f0ebe4" stroke="#1c1917" stroke-width="1.5" />
+        <text x="398" y="70" text-anchor="middle" fill="#1c1917" font-size="14">SpEmotionKey</text>
+        <text x="398" y="92" text-anchor="middle" fill="#57534e" font-size="13">session emotion</text>
+
+        <line x1="488" y1="75" x2="546" y2="75" stroke="#1c1917" stroke-width="1.5" marker-end="url(#arr)" />
+        <text x="517" y="64" text-anchor="middle" fill="#57534e" font-size="12">lookup</text>
+
+        <rect x="554" y="30" width="314" height="90" rx="10" fill="#ffedd5" stroke="#1c1917" stroke-width="1.5" />
+        <text x="711" y="58" text-anchor="middle" fill="#1c1917" font-size="14">emotional_model</text>
+        <text x="711" y="80" text-anchor="middle" fill="#57534e" font-size="13">if_doctor_*</text>
+        <text x="711" y="102" text-anchor="middle" fill="#57534e" font-size="13">→ SP system prompt</text>
+      </svg>
+    </section>
+
+    <section class="panel">
+      <h2>Multi-agent turn order</h2>
+      <p class="sub"><code>MultiAgentSession</code>: SP responds first, then tutor ∥ evaluator in parallel.</p>
+      <div class="legend">
+        <span><span class="swatch sp"></span>SP</span>
+        <span><span class="swatch a2a"></span>Tutor / Eval</span>
+      </div>
+      <svg class="flow" viewBox="0 0 880 130" role="img" aria-label="Student message to SP then parallel evaluator and tutor">
+        <defs>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#1c1917" />
+          </marker>
+        </defs>
+        <rect x="10" y="40" width="130" height="50" rx="8" fill="#f0ebe4" stroke="#1c1917" stroke-width="1.5" />
+        <text x="75" y="70" text-anchor="middle" fill="#1c1917" font-size="13">student msg</text>
+        <line x1="140" y1="65" x2="188" y2="65" stroke="#1c1917" stroke-width="1.5" marker-end="url(#arr2)" />
+
+        <rect x="196" y="40" width="150" height="50" rx="8" fill="#ccfbf1" stroke="#1c1917" stroke-width="1.5" />
+        <text x="271" y="60" text-anchor="middle" fill="#1c1917" font-size="13">SP reply</text>
+        <text x="271" y="78" text-anchor="middle" fill="#57534e" font-size="12">emotion key</text>
+
+        <line x1="346" y1="65" x2="400" y2="38" stroke="#1c1917" stroke-width="1.5" marker-end="url(#arr2)" />
+        <line x1="346" y1="65" x2="400" y2="92" stroke="#1c1917" stroke-width="1.5" marker-end="url(#arr2)" />
+
+        <rect x="408" y="14" width="170" height="42" rx="8" fill="#ede9fe" stroke="#1c1917" stroke-width="1.5" />
+        <text x="493" y="40" text-anchor="middle" fill="#1c1917" font-size="13">turn_evaluator</text>
+        <rect x="408" y="74" width="170" height="42" rx="8" fill="#ede9fe" stroke="#1c1917" stroke-width="1.5" />
+        <text x="493" y="100" text-anchor="middle" fill="#1c1917" font-size="13">tutor_agent</text>
+
+        <line x1="578" y1="35" x2="630" y2="50" stroke="#1c1917" stroke-width="1.5" marker-end="url(#arr2)" />
+        <line x1="578" y1="95" x2="630" y2="80" stroke="#1c1917" stroke-width="1.5" marker-end="url(#arr2)" />
+
+        <rect x="638" y="40" width="150" height="50" rx="8" fill="#f0ebe4" stroke="#1c1917" stroke-width="1.5" />
+        <text x="713" y="60" text-anchor="middle" fill="#1c1917" font-size="13">eval_update</text>
+        <text x="713" y="78" text-anchor="middle" fill="#57534e" font-size="12">tutor_hint?</text>
+      </svg>
+    </section>
+
+    <section class="panel">
+      <h2>Schemas</h2>
+      <p class="sub">Expand a section for field-level contracts.</p>
+
+      <details open>
+        <summary>Agent ↔ client / agent contracts</summary>
+        <table>
+          <thead>
+            <tr><th>Channel</th><th>Schema / type</th><th>Fields</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>WS → client</td><td><code>patient_response</code></td><td><code>type</code> <code>content</code> <code>emotion</code> · opening may nest <code>eval_update</code></td></tr>
+            <tr><td>WS → client</td><td><code>eval_update</code></td><td><code>checklist</code> <code>completion_rate</code> <code>score</code> <code>delta</code></td></tr>
+            <tr><td>WS → client</td><td><code>tutor_hint</code></td><td><code>content</code> <code>hint_level</code> <code>intervention_type</code></td></tr>
+            <tr><td>WS → client</td><td><code>typing</code> / <code>session_summary</code></td><td>status / end-of-session aggregate</td></tr>
+            <tr><td>SP ← doctor</td><td><code>DoctorTurnAnalysis</code></td><td><code>content_empathy</code> <code>emotional_response</code> <code>overall_attitude</code> <code>certainty</code> <code>limitations</code></td></tr>
+            <tr><td>SP runtime</td><td><code>SpEmotionKey</code></td><td><code>baseline</code> <code>empathetic</code> <code>cold</code> <code>rushing</code></td></tr>
+            <tr><td>Tutor JSON</td><td><code>tutor_agent.yaml</code> out</td><td><code>should_intervene</code> <code>intervention_type</code> <code>hint_level</code> <code>hint_content</code></td></tr>
+            <tr><td>Evaluator JSON</td><td><code>turn_evaluator.yaml</code> out</td><td><code>checked_items[]</code> <code>reasoning</code></td></tr>
+            <tr><td>DB message</td><td><code>evaluator_delta_json</code></td><td><code>checked_items</code> <code>reasoning</code> on student row</td></tr>
+          </tbody>
+        </table>
+      </details>
+
+      <details>
+        <summary>Doctor schema · <code>DoctorTurnAnalysis</code></summary>
+        <p class="sub"><code>backend/app/agents/doctor_attitude.py</code> · Omni JSON · <code>extra="forbid"</code></p>
+        <table>
+          <thead>
+            <tr><th>Field</th><th>Type</th><th>Enum values</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>content_empathy</code></td><td><code>ContentEmpathy</code></td><td>有明确共情表达 · 仅礼貌或信息表达 · 忽视或否定感受 · 无法判断</td></tr>
+            <tr><td><code>content_evidence</code></td><td><code>str</code></td><td>—</td></tr>
+            <tr><td><code>emotional_response.patient_cue</code></td><td><code>str</code></td><td>—</td></tr>
+            <tr><td><code>emotional_response.judgment</code></td><td><code>ResponseLevel</code></td><td>充分回应 · 部分回应 · 未回应 · 否定或淡化 · 无需情绪回应 · 无法判断</td></tr>
+            <tr><td><code>emotional_response.evidence</code></td><td><code>str</code></td><td>—</td></tr>
+            <tr><td><code>overall_attitude</code></td><td><code>Attitude</code></td><td>关心共情 · 中性 · 疏离冷淡 · 催促急躁 · 混合 · 不确定</td></tr>
+            <tr><td><code>certainty</code></td><td><code>Certainty</code></td><td>低 · 中 · 高</td></tr>
+            <tr><td><code>limitations</code></td><td><code>str</code></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </details>
+
+      <details>
+        <summary>Patient schema · <code>emotional_model</code></summary>
+        <p class="sub">Case YAML keyed by <code>SpEmotionKey</code></p>
+        <table>
+          <thead>
+            <tr><th>Key</th><th>YAML field</th><th>Appendicitis example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>baseline</code></td><td><code>baseline</code></td><td>焦虑、害怕、疼痛使表情痛苦</td></tr>
+            <tr><td><code>empathetic</code></td><td><code>if_doctor_empathetic</code></td><td>逐渐放松，愿意配合详细回答</td></tr>
+            <tr><td><code>cold</code></td><td><code>if_doctor_cold</code></td><td>紧张加剧，回答变简短，不愿多说</td></tr>
+            <tr><td><code>rushing</code></td><td><code>if_doctor_rushing</code></td><td>感到被忽视，可能遗漏深层症状信息</td></tr>
+          </tbody>
+        </table>
+      </details>
+
+      <details>
+        <summary>SP yaml inject · <code>sp_agent.yaml</code></summary>
+        <p class="sub"><code>build_sp_system_prompt</code> → <code>PromptRegistry.get("sp_agent").format(...)</code></p>
+        <table>
+          <thead>
+            <tr><th>Placeholder</th><th>Source</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>{name}</code> <code>{age}</code> <code>{gender}</code> <code>{occupation}</code> <code>{personality}</code> <code>{appearance}</code></td><td><code>case.patient_profile</code></td></tr>
+            <tr><td><code>{pathophysiology}</code></td><td><code>case.pathophysiology</code></td></tr>
+            <tr><td><code>{info_summary}</code></td><td><code>_build_info_summary</code> from <code>information_layers</code></td></tr>
+            <tr><td><code>{emotion_state}</code></td><td><code>baseline</code> or <code>if_doctor_{current_emotion}</code></td></tr>
+            <tr><td><code>{emo_empathetic}</code> <code>{emo_cold}</code> <code>{emo_rushing}</code></td><td>always all three <code>if_doctor_*</code> rule strings</td></tr>
+          </tbody>
+        </table>
+        <pre style="margin-top:12px">## 当前情绪状态: {emotion_state}
+根据这个情绪状态调整你的语气和回答详细程度。
+
+## 情绪响应规则
+- 如果医生表现出关心、共情: {emo_empathetic}
+- 如果医生态度冷漠: {emo_cold}
+- 如果医生催促急躁: {emo_rushing}</pre>
+      </details>
+    </section>
+
+    <p class="foot">
+      Source repo:
+      <a href="https://github.com/Fawkes7/voice-agent-medu">Fawkes7/voice-agent-medu</a>
+      · file <code>docs/agent-to-agent-schemas.html</code>
+      · open raw for a clean full-page view
+    </p>
+  </main>
+</body>
+</html>
