@@ -40,6 +40,10 @@ The methodology document is located at:
 
 - `docs/METHODOLOGY.md`
 
+Agent-to-agent emotion / WS schema explainer (shareable HTML):
+
+- [`docs/agent-to-agent-schemas.html`](docs/agent-to-agent-schemas.html)
+
 ![Medu-SPAgent System Architecture](docs/medu-spagent-architecture.png)
 
 ![Agent collaboration policy across the four learning conditions](docs/medu-spagent-methods.png)
