@@ -137,14 +137,42 @@ backend/app/prompts/
 | 组件 | 模型 | 配置键 | 调用 |
 |---|---|---|---|
 | SP / Tutor / Turn Evaluator / Final Evaluator | **`qwen-max`** | `QWEN_MODEL`（默认 `qwen-max`） | `call_qwen` → DashScope `Generation` |
-| Doctor attitude（情绪检测） | **`qwen3.8-omni-flash`** | `QWEN_OMNI_MODEL` | `call_qwen(..., model=QWEN_OMNI_MODEL)`；可选音频走 `MultiModalConversation` |
+| **情绪检测（Doctor attitude → SP emotion）** | **`qwen3.8-omni-flash`** | `QWEN_OMNI_MODEL` | 见下节 |
 | CT | 无 LLM | — | — |
 
 需要：`DASHSCOPE_API_KEY`（放在 **`backend/.env`**，不要写进 `.env.example` 或 git）。
 
 **历史**：从初始提交起对话 LLM 就是 **Qwen `qwen-max` via DashScope**；后来才加 omni 做态度检测。不是从 Kimi 迁过来的。
 
-### 2.2 B 线（`origin/master`）— Gemini / 多厂商
+### 2.2 情绪检测模型（单独拆开）
+
+问诊里有两段 LLM，**不要混成同一个模型**：
+
+| 步骤 | 做什么 | 模型 | 配置 |
+|---|---|---|---|
+| ① 情绪 / 态度检测 | 读**学生（医生）本轮话**，判 SP 该切到 `baseline` / `empathetic` / `cold` / `rushing` | **`qwen3.8-omni-flash`** | `QWEN_OMNI_MODEL`；开关 `DOCTOR_ATTITUDE_USE_LLM`（默认 `true`） |
+| ② 病人回复 | 用更新后的 `{emotion_state}` 生成 SP 回答 | **`qwen-max`** | `QWEN_MODEL` |
+
+细节：
+
+- **代码**：`backend/app/agents/doctor_attitude.py` → `detect_sp_emotion_shift`  
+- **谁调用**：`sp_agent.generate_sp_response` 在拼 SP prompt / 调 `call_qwen` **之前**先跑检测  
+- **Prompt**：内联 `DOCTOR_ATTITUDE_SYSTEM_PROMPT`（不在 `backend/app/prompts/*.yaml`）  
+- **文本路径（当前默认）**：`call_qwen(..., model=settings.QWEN_OMNI_MODEL)` → DashScope `Generation`  
+- **可选音频路径**：若传入 `doctor_audio_wav`，走 `dashscope.MultiModalConversation`，模型仍是 **`QWEN_OMNI_MODEL`**（同为 `qwen3.8-omni-flash`）  
+- **降级**：`DOCTOR_ATTITUDE_USE_LLM=false`、无 key、或 LLM 失败 → `detect_emotion_shift_regex`（规则匹配，不调模型）  
+- **Gemini / master 线**：当前 **没有** `doctor_attitude`；换 `LLM_PROVIDER=gemini` **不会**自动改情绪检测模型（那条线根本没有这一步）
+
+`.env` 相关项：
+
+```bash
+QWEN_MODEL=qwen-max                 # SP / tutor / judges
+QWEN_OMNI_MODEL=qwen3.8-omni-flash  # 情绪检测专用
+DOCTOR_ATTITUDE_USE_LLM=true
+DASHSCOPE_API_KEY=...
+```
+
+### 2.3 B 线（`origin/master`）— Gemini / 多厂商
 
 配置概念：`LLM_PROVIDER` + 可选 `LLM_MODEL`；统一 `call_llm`（OpenAI-compatible）。
 
@@ -157,13 +185,13 @@ backend/app/prompts/
 | 组件 | 用哪个模型 |
 |---|---|
 | SP / Tutor / Turn Evaluator / Final Evaluator | **同一个** `settings.llm_model`（由 provider 决定） |
-| Doctor attitude | **master 线当前没有该 agent** |
+| Doctor attitude / 情绪检测 | **master 线当前没有该 agent**（无 `QWEN_OMNI_MODEL` 路径） |
 | CT | 无 LLM |
 
 因此：
 
-- **原来（A 线 / 早期主线）**：对话全是 **`qwen-max`**。  
-- **你在 master 上的示例配置**：`LLM_PROVIDER=gemini` → 上述 agent 默认都变成 **`gemini-2.5-flash`**。  
+- **原来（A 线 / 早期主线）**：对话全是 **`qwen-max`**；情绪检测后加为 **`qwen3.8-omni-flash`**。  
+- **你在 master 上的示例配置**：`LLM_PROVIDER=gemini` → SP/Tutor/Judges 默认变成 **`gemini-2.5-flash`**；**仍无情绪检测模型**。  
 - **不是 Kimi**。
 
 代码默认值注意：`config.py` 里 `LLM_PROVIDER` 字段默认字符串可能是 `"qwen"`，但 **`.env.example` 写的是 `gemini`**——以你实际加载的 `.env` 为准。
@@ -179,7 +207,7 @@ backend/app/prompts/
 | ASR | **无**（文本输入） |
 | TTS | **无**（文本气泡） |
 
-Omni 态度检测里有「未来前端上传 WAV」的辅助函数，**不是**产品 ASR。
+情绪检测的 Omni **可选音频输入**（`doctor_audio_wav` → `MultiModalConversation`）是态度分析的多模态路径，**不是**产品 ASR；产品问诊输入仍是文本。
 
 ### 3.2 B 线（`origin/master`）— 语音问诊（主要用于 MA）
 
@@ -214,8 +242,9 @@ Omni 态度检测里有「未来前端上传 WAV」的辅助函数，**不是**�
 | `disclosed_content`？ | CT 本阶段披露的病人信息文本 |
 | `prompt_to_student`？ | CT 本阶段给学生的书面任务题 |
 | `stage_title`？ | CT 阶段标题 |
-| 原来模型？ | **`qwen-max`（DashScope）**；无 Kimi |
-| 改成 Gemini 了吗？ | **仅当跑 master 且 `LLM_PROVIDER=gemini`**：默认 **`gemini-2.5-flash`**；`main`/情绪分支仍是 Qwen |
+| 原来对话模型？ | **`qwen-max`（DashScope）**；无 Kimi |
+| **情绪检测模型？** | **`qwen3.8-omni-flash`**（`QWEN_OMNI_MODEL`）；与 SP 的 `qwen-max` 分开；开关 `DOCTOR_ATTITUDE_USE_LLM` |
+| 改成 Gemini 了吗？ | **仅当跑 master 且 `LLM_PROVIDER=gemini`**：SP/Tutor/Judges → **`gemini-2.5-flash`**；`main`/情绪分支对话仍是 Qwen；**Gemini 线无情绪检测** |
 | ASR？ | master：**ElevenLabs Scribe v2 Realtime**；否则无 |
 | TTS？ | master：**ElevenLabs Flash v2.5**；否则无 |
 
@@ -227,9 +256,10 @@ Omni 态度检测里有「未来前端上传 WAV」的辅助函数，**不是**�
 |---|---|
 | Prompt 注册表 | `backend/app/prompts/__init__.py` |
 | SP / Tutor / Evaluators | `backend/app/agents/*.py` |
+| **情绪检测（Omni）** | `backend/app/agents/doctor_attitude.py`（由 `sp_agent.py` 调用） |
 | MA / SA / Exam / CT | `backend/app/sessions/*.py` |
 | CT 字段与阶段文案 | `backend/app/sessions/control.py` |
 | WS `end_session` | `backend/app/main.py` |
-| A 线模型配置 | `backend/app/config.py`、`backend/.env.example` |
+| A 线模型配置 | `backend/app/config.py`、`backend/.env.example`（`QWEN_MODEL` / `QWEN_OMNI_MODEL`） |
 | B 线模型 + 语音配置 | `origin/master` 上同名文件 + `backend/app/voice/` |
 | 研究方法总览 | `docs/METHODOLOGY.md`、`README.md` |
