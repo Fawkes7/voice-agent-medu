@@ -152,6 +152,8 @@ Prompt usage by method:
 | Exam | `sp_agent` + `final_evaluator` |
 | CT | No LLM prompt |
 
+For a full map of prompt locations, end-of-session / completion rules, CT fields (`prompt_to_student` / `stage_title` / `disclosed_content`), per-component models (Qwen vs Gemini), and ASR/TTS, see [`docs/PROMPTS_MODELS_VOICE.md`](docs/PROMPTS_MODELS_VOICE.md).
+
 ---
 
 ## 4. Case Library
